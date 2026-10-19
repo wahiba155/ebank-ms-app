@@ -4,6 +4,7 @@ package org.moussaoui.ebankbot.Agents;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,12 +17,17 @@ public class EbankAiAgent {
 
     public EbankAiAgent(
             ChatClient.Builder chatClientBuilder,
-            ChatMemory chatMemory) {
+            ChatMemory chatMemory, ToolCallbackProvider tools) {
 
         this.chatClient = chatClientBuilder
                 .defaultAdvisors(
                         MessageChatMemoryAdvisor.builder(chatMemory).build()
                 )
+                .defaultAdvisors(
+                        MessageChatMemoryAdvisor
+                                .builder(chatMemory)
+                                .build()
+                ).defaultTools(tools.getToolCallbacks())
                 .build();
     }
 
