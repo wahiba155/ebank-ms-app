@@ -20,6 +20,11 @@ public class EbankAiAgent {
             ChatMemory chatMemory, ToolCallbackProvider tools) {
 
         this.chatClient = chatClientBuilder
+                .defaultSystem("""
+                        Vous un assistant qui se charge de répondre aux question
+                        de l'utilisateur à propos des clients et des comptes bancaires, en fonction du contexte fourni.
+                        Si aucun contexte n'est fourni, répond avec JE NE SAIS PAS
+                        """)
                 .defaultAdvisors(
                         MessageChatMemoryAdvisor.builder(chatMemory).build()
                 )
